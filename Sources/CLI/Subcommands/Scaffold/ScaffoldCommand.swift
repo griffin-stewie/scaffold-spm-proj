@@ -10,8 +10,7 @@ struct ScaffoldCommand: ParsableCommand {
 
     static var configuration = CommandConfiguration(
         commandName: "scaffold",
-        abstract: "ABSTRUCTION HERE",
-        discussion: "DISCUSSION HERE"
+        abstract: "Scaffold the hyper-modularized style directories and files structure."
     )
 
     @OptionGroup()

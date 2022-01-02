@@ -4,8 +4,7 @@ import ArgumentParser
 struct RootCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "scaffold-spm-proj",
-        abstract: "ABSTRUCTION HERE",
-        discussion: "DISCUSSION HERE",
+        abstract: "Supports to setup the hyper-modularized style by Point-Free using SwiftPM.",
         version: "0.1.0",
         subcommands: [ScaffoldCommand.self]
     )
