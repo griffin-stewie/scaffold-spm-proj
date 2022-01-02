@@ -16,21 +16,6 @@ public struct Xcworkspace {
 
     }
 
-//    public init(at url: URL) throws {
-//        let doc = try XMLDocument(contentsOf: url)
-//        print(doc.rootElement())
-//
-//        if let root = doc.rootElement() {
-//            let fileRef = doc.rootElement()!.children![1] as! XMLElement
-//            print(fileRef)
-////            root.children.map { [XMLNode] in
-////                <#code#>
-////            }
-//        }
-//
-//        print("end")
-//    }
-
     public mutating func append(_ ref: FileReference) {
         self.fileReferences.append(ref)
     }
