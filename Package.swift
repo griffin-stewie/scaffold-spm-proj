@@ -32,7 +32,7 @@ let package = Package(
         .target(
             name: "Core",
             dependencies: [
-                .product(name: "SwiftPM", package: "swift-package-manager"),
+                .product(name: "SwiftPM-auto", package: "swift-package-manager"),
             ]),
         .target(
             name: "Xcworkspace",
