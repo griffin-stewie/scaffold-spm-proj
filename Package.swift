@@ -14,9 +14,10 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "1.0.2")),
+        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.4.0")),
         .package(url: "https://github.com/apple/swift-tools-support-core.git", .upToNextMinor(from: "0.2.4")),
         .package(url: "https://github.com/mxcl/Path.swift.git", .upToNextMinor(from: "1.4.0")),
+        .package(url: "https://github.com/apple/swift-package-manager", .branch("swift-5.5.2-RELEASE")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -27,13 +28,13 @@ let package = Package(
                 "Core",
                 "Xcworkspace",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .product(name: "SwiftToolsSupport-auto", package: "swift-tools-support-core"),
                 .product(name: "Path", package: "Path.swift"),
 			]),
         .target(
             name: "Core",
             dependencies: [
                 .product(name: "SwiftToolsSupport-auto", package: "swift-tools-support-core"),
+                .product(name: "SwiftPM", package: "swift-package-manager"),
             ]),
         .target(
             name: "Xcworkspace",
@@ -42,6 +43,9 @@ let package = Package(
         .testTarget(
             name: "scaffold-spm-projTests",
             dependencies: ["CLI"]),
+        .testTarget(
+            name: "CoreTests",
+            dependencies: ["Core"]),
         .testTarget(
             name: "XcworkspaceTests",
             dependencies: [

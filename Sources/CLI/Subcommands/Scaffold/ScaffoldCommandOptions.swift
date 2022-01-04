@@ -16,7 +16,7 @@ struct ScaffoldCommandOptions: ParsableArguments {
     @Option()
     var xcodeProjectName: String?
 
-    @Option()
+    @Option(name: [.customLong("module-name")], help: ArgumentHelp("module name", valueName: "name"))
     var moduleNames: [String] = []
 }
 
