@@ -5,6 +5,9 @@ import Path
 import TSCBasic
 import Core
 import Xcworkspace
+import Workspace
+import Basics
+import PackageModel
 
 struct ScaffoldCommand: ParsableCommand {
 
@@ -75,6 +78,9 @@ extension ScaffoldCommand {
 
         // 1. rm README.md
         try fs.removeItemIfExists(at: (Path.cwd/"README.md").url)
+
+        var rewriter = try ManifestRewriter(packagePath: Path.cwd.absolutePath())
+        try rewriter.addTargets(names: options.moduleNames)
 
         // 1. cd ../..
         fs.changeCurrentDirectoryPath(options.destinationDirectory.string)
