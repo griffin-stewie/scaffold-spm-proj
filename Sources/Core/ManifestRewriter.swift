@@ -6,6 +6,8 @@ import PackageModel
 
 public struct ManifestRewriter {
 
+    public static let fileName: String = Manifest.filename
+
     let fileSystem: FileSystem
 
     let packagePath: AbsolutePath

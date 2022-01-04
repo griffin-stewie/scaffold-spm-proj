@@ -81,6 +81,12 @@ extension ScaffoldCommand {
 
         var rewriter = try ManifestRewriter(packagePath: Path.cwd.absolutePath())
         try rewriter.addTargets(names: options.moduleNames)
+        try rewriter.write(to: (Path.cwd/ManifestRewriter.fileName).absolutePath())
+
+        for moduleName in options.moduleNames {
+            try generateModuleSampleFile(name: moduleName, rootDirectory: Path.cwd/"Sources")
+        }
+
 
         // 1. cd ../..
         fs.changeCurrentDirectoryPath(options.destinationDirectory.string)
@@ -92,5 +98,20 @@ extension ScaffoldCommand {
         workspace.append(FileReference(location: FilePath(location)))
         let workspacedataPath = Path("\(xcworkspacePah)/contents.xcworkspacedata")!
         try workspace.write(to: workspacedataPath.url)
+    }
+
+    func generateModuleSampleFile(name: String, rootDirectory: Path) throws {
+        let moduleDir: Path = rootDirectory/name
+        try moduleDir.mkdir(.p)
+        let content = """
+            public struct \(name) {
+                public private(set) var text = "Hello, World!"
+
+                public init() {
+                }
+            }
+            """
+
+        try content.write(to: moduleDir/"\(name).swift", atomically: true)
     }
 }
