@@ -7,3 +7,4 @@ DerivedData/
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 /.vscode
 /.swiftpm/xcode/xcshareddata/xcschemes/scaffold-spm-proj.xcscheme
+/release_binary.zip
