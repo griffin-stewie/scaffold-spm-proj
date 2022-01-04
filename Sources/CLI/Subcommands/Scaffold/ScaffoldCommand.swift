@@ -48,6 +48,12 @@ extension ScaffoldCommand {
         // 1. touch README.md
         try "# \(options.repositoryName)".write(to: Path.cwd/"README.md")
 
+        if let directoryInto = options.directoryInto {
+            let dir = Path.cwd/directoryInto
+            try dir.mkdir()
+            fs.changeCurrentDirectoryPath(dir.string)
+        }
+
         // 1. mkdir options.xcworkspaceName
         try (Path.cwd/options.resolvedXcworkspaceName()).mkdir()
 

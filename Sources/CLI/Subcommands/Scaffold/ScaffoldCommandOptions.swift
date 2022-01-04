@@ -16,6 +16,9 @@ struct ScaffoldCommandOptions: ParsableArguments {
     @Option()
     var xcodeProjectName: String?
 
+    @Option(name: [.customLong("into")], help: ArgumentHelp("Directory for source code nested into", valueName: "dir_name"))
+    var directoryInto: String?
+
     @Option(name: [.customLong("module-name")], help: ArgumentHelp("module name", valueName: "name"))
     var moduleNames: [String] = []
 }
@@ -37,11 +40,3 @@ extension ScaffoldCommandOptions {
         return xcodeProjectName
     }
 }
-
-/*
- repository name
- xcworkspace's name
- xcodeproj's name
- module names
-
- */
