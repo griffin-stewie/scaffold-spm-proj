@@ -15,7 +15,6 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.4.0")),
-        .package(url: "https://github.com/apple/swift-tools-support-core.git", .upToNextMinor(from: "0.2.4")),
         .package(url: "https://github.com/mxcl/Path.swift.git", .upToNextMinor(from: "1.4.0")),
         .package(url: "https://github.com/apple/swift-package-manager", .branch("swift-5.5.2-RELEASE")),
     ],
@@ -33,7 +32,6 @@ let package = Package(
         .target(
             name: "Core",
             dependencies: [
-                .product(name: "SwiftToolsSupport-auto", package: "swift-tools-support-core"),
                 .product(name: "SwiftPM", package: "swift-package-manager"),
             ]),
         .target(
