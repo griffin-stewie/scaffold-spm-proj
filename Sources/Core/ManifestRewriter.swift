@@ -78,27 +78,35 @@ extension Manifest {
 
             var platformsParams = [String]()
             for supportedPlatform in platforms {
-                let version = supportedPlatform.version
-                let platform = supportedPlatform.platformName
+                let version = PlatformVersion(supportedPlatform.version)
+                let platform = supportedPlatform.platform
 
-                var param = ".\(platform)("
-//                if supportedPlatform.isManifestAPIAvailable {
-//                    if version.minor > 0 {
-//                        param += ".v\(version.major)_\(version.minor)"
-//                    } else {
-//                        param += ".v\(version.major)"
-//                    }
-//                } else {
-//                    param += "\"\(version.versionString)\""
-//                }
+                var param = ".\(platform.manifestName)("
+                if isManifestAPIAvailable(platform: platform, version: version) {
+                    if version.minor > 0 {
+                        param += ".v\(version.major)_\(version.minor)"
+                    } else {
+                        param += ".v\(version.major)"
+                    }
+                } else {
+                    param += "\"\(version)\""
+                }
                 param += ")"
 
                 platformsParams.append(param)
             }
 
             if !platforms.isEmpty {
+                let platformsString: String
+                if platformsParams.count > 1 {
+                    platformsString = platformsParams.joined(separator: ",\n")
+                } else {
+                    platformsString = platformsParams[0] + ","
+                }
                 pkgParams.append("""
-                        platforms: [\(platformsParams.joined(separator: ", "))]
+                        platforms: [
+                            \(platformsString)
+                        ]
                     """)
             }
 
@@ -220,6 +228,40 @@ extension Manifest {
     private func writePackageFile(_ path: AbsolutePath, fileSystem: FileSystem = localFileSystem, body: (OutputByteStream) -> Void) throws {
         try fileSystem.writeFileContents(path, body: body)
     }
+
+    private func isManifestAPIAvailable(platform: PackageModel.Platform, version: PlatformVersion) -> Bool {
+        if platform == .macOS && version.major == 10 {
+            guard version.patch == 0 else {
+                return false
+            }
+        } else if [Platform.macOS, .macCatalyst, .iOS, .watchOS, .tvOS, .driverKit].contains(platform) {
+            guard version.minor == 0, version.patch == 0 else {
+                return false
+            }
+        } else {
+            return false
+        }
+
+        switch platform {
+        case .macOS where version.major == 10:
+            return (10...15).contains(version.minor)
+        case .macOS:
+            return (11...11).contains(version.major)
+        case .macCatalyst:
+            return (13...14).contains(version.major)
+        case .iOS:
+            return (8...14).contains(version.major)
+        case .tvOS:
+            return (9...14).contains(version.major)
+        case .watchOS:
+            return (2...7).contains(version.major)
+        case .driverKit:
+            return (19...20).contains(version.major)
+
+        default:
+            return false
+        }
+    }
 }
 
 extension Array where Element == TargetDescription {
@@ -263,6 +305,56 @@ extension TargetDescription {
             return "binaryTarget"
         case .plugin:
             return "plugin"
+        }
+    }
+}
+
+extension PlatformDescription {
+    var platform: PackageModel.Platform {
+        switch platformName {
+        case "macos":
+            return .macOS
+        case "maccatalyst":
+            return .macCatalyst
+        case "ios":
+            return .iOS
+        case "tvos":
+            return .tvOS
+        case "watchos":
+            return .watchOS
+        case "driverkit":
+            return .driverKit
+        case "linux":
+            return .linux
+        case "android":
+            return .android
+        case "windows":
+            return .windows
+        case "wasi":
+            return .wasi
+        default:
+            fatalError("Unknown platform name: `\(platformName)`")
+        }
+    }
+}
+
+extension PackageModel.Platform {
+    var manifestName: String {
+        switch self {
+        case .macOS:
+            return "macOS"
+        case .macCatalyst:
+            return "macCatalyst"
+        case .iOS:
+            return "iOS"
+        case .tvOS:
+            return "tvOS"
+        case .watchOS:
+            return "watchOS"
+        case .driverKit:
+            return "DriverKit"
+        default:
+            fatalError("unexpected manifest name call for platform \(self)")
         }
     }
 }
