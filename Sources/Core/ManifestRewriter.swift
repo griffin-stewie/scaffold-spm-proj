@@ -1,8 +1,8 @@
+import Basics
 import Foundation
+import PackageModel
 import TSCBasic
 import Workspace
-import Basics
-import PackageModel
 
 public struct ManifestRewriter {
 
@@ -21,9 +21,9 @@ public struct ManifestRewriter {
         let swiftCompiler: AbsolutePath = {
             let string: String
             #if os(macOS)
-            string = try! Process.checkNonZeroExit(args: "xcrun", "--sdk", "macosx", "-f", "swiftc").spm_chomp()
+                string = try! Process.checkNonZeroExit(args: "xcrun", "--sdk", "macosx", "-f", "swiftc").spm_chomp()
             #else
-            string = try! Process.checkNonZeroExit(args: "which", "swiftc").spm_chomp()
+                string = try! Process.checkNonZeroExit(args: "which", "swiftc").spm_chomp()
             #endif
             return AbsolutePath(string)
         }()
@@ -53,7 +53,9 @@ public struct ManifestRewriter {
 
 extension Manifest {
     func copyAppending(newTargets: [TargetDescription]) -> Self {
-        return Self.init(name: name, path: path, packageKind: packageKind, packageLocation: packageLocation, defaultLocalization: defaultLocalization, platforms: platforms, version: version, revision: revision, toolsVersion: toolsVersion, pkgConfig: pkgConfig, providers: providers, cLanguageStandard: cLanguageStandard, cxxLanguageStandard: cxxLanguageStandard, swiftLanguageVersions: swiftLanguageVersions, dependencies: dependencies, products: products, targets: targets + newTargets)
+        return Self.init(
+            name: name, path: path, packageKind: packageKind, packageLocation: packageLocation, defaultLocalization: defaultLocalization, platforms: platforms, version: version, revision: revision, toolsVersion: toolsVersion, pkgConfig: pkgConfig, providers: providers,
+            cLanguageStandard: cLanguageStandard, cxxLanguageStandard: cxxLanguageStandard, swiftLanguageVersions: swiftLanguageVersions, dependencies: dependencies, products: products, targets: targets + newTargets)
     }
 
     func write(to destination: AbsolutePath, fileSystem: FileSystem = localFileSystem) throws {
@@ -72,7 +74,8 @@ extension Manifest {
                 """
 
             var pkgParams = [String]()
-            pkgParams.append("""
+            pkgParams.append(
+                """
                     name: "\(name)"
                 """)
 
@@ -103,7 +106,8 @@ extension Manifest {
                 } else {
                     platformsString = platformsParams[0] + ","
                 }
-                pkgParams.append("""
+                pkgParams.append(
+                    """
                         platforms: [
                             \(platformsString)
                         ]
@@ -114,18 +118,20 @@ extension Manifest {
 
                 var productsParams: [String] = []
 
-                productsParams.append("""
-                    products: [
-                        // Products define the executables and libraries a package produces, and make them visible to other packages.
-                """)
+                productsParams.append(
+                    """
+                        products: [
+                            // Products define the executables and libraries a package produces, and make them visible to other packages.
+                    """)
 
                 if products.count == 1 {
                     let product = products[0]
-                    productsParams.append("""
-                            .library(
-                                name: "\(product.name)",
-                                targets: ["\(product.name)"]),
-                    """)
+                    productsParams.append(
+                        """
+                                .library(
+                                    name: "\(product.name)",
+                                    targets: ["\(product.name)"]),
+                        """)
                     productsParams.append("    ]")
                 } else {
                     for product in products {
@@ -138,7 +144,6 @@ extension Manifest {
 
                         pkgParams.append("            name: \"\(product.name)\",")
                         pkgParams.append("            targets: [")
-
 
 
                         for target in product.targets {
@@ -156,7 +161,8 @@ extension Manifest {
 
 
             if dependencies.isEmpty {
-                pkgParams.append("""
+                pkgParams.append(
+                    """
                         dependencies: [
                             // Dependencies declare other packages that this package depends on.
                             // .package(url: /* package url */, from: "1.0.0"),
@@ -167,7 +173,8 @@ extension Manifest {
             }
 
             if targets.isEmpty {
-                pkgParams.append("""
+                pkgParams.append(
+                    """
                         targets: [
                             // Targets are the basic building blocks of a package. A target can define a module or a test suite.
                             // Targets can depend on other targets in this package, and on products in packages this package depends on.
@@ -175,36 +182,40 @@ extension Manifest {
                     """)
             } else {
                 var targetsParams: [String] = []
-                targetsParams.append("""
+                targetsParams.append(
+                    """
                         targets: [
                             // Targets are the basic building blocks of a package. A target can define a module or a test suite.
                             // Targets can depend on other targets in this package, and on products in packages this package depends on.
                     """)
 
                 for target in targets.sorted() {
-                    targetsParams.append("""
-                                    .\(target.functionName())(
-                                        name: "\(target.name)",
-                            """)
+                    targetsParams.append(
+                        """
+                                .\(target.functionName())(
+                                    name: "\(target.name)",
+                        """)
                     if target.dependencies.isEmpty {
-                        targetsParams.append("""
-                                            dependencies: []),
-                                """)
+                        targetsParams.append(
+                            """
+                                        dependencies: []),
+                            """)
                     } else {
                         if target.dependencies.count == 1 {
                             var content = ""
                             let dependency = target.dependencies[0]
                             switch dependency {
-                            case .byName(name: let name, condition: nil):
+                            case .byName(let name, condition: nil):
                                 content = name
                             case .byName(name: _, condition: _):
                                 content = "\(dependency)"
                             default:
                                 fatalError("not supported now")
                             }
-                            targetsParams.append("""
-                                                    dependencies: ["\(content)"]),
-                                        """)
+                            targetsParams.append(
+                                """
+                                            dependencies: ["\(content)"]),
+                                """)
                         } else {
                             fatalError("not supported now")
                         }
@@ -218,7 +229,7 @@ extension Manifest {
             stream <<< pkgParams.joined(separator: ",\n") <<< "\n)\n"
         }
 
-        
+
         let version = InitPackage.newPackageToolsVersion.zeroedPatch
 
         // Write the current tools version.
@@ -286,7 +297,7 @@ extension Array where Element == TargetDescription {
                 target.type == .plugin
             },
         ]
-            .flatMap({ $0 })
+        .flatMap({ $0 })
     }
 }
 

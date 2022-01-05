@@ -1,13 +1,13 @@
-import Foundation
-import System
 import ArgumentParser
-import Path
-import TSCBasic
-import Core
-import Xcworkspace
-import Workspace
 import Basics
+import Core
+import Foundation
 import PackageModel
+import Path
+import System
+import TSCBasic
+import Workspace
+import Xcworkspace
 
 struct ScaffoldCommand: ParsableCommand {
 
@@ -36,7 +36,7 @@ extension ScaffoldCommand {
         print(Path.cwd.string)
 
         // 1. mkdir options.repositoryName
-        try (Path.cwd/options.repositoryName).mkdir()
+        try (Path.cwd / options.repositoryName).mkdir()
 
 
         // 1. cd options.repositoryName
@@ -46,51 +46,51 @@ extension ScaffoldCommand {
         _ = try Shell.shared.run(arguments: ["git", "init"])
 
         // 1. touch README.md
-        try "# \(options.repositoryName)".write(to: Path.cwd/"README.md")
+        try "# \(options.repositoryName)".write(to: Path.cwd / "README.md")
 
         if let directoryInto = options.directoryInto {
-            let dir = Path.cwd/directoryInto
+            let dir = Path.cwd / directoryInto
             try dir.mkdir()
             fs.changeCurrentDirectoryPath(dir.string)
         }
 
         // 1. mkdir options.xcworkspaceName
-        try (Path.cwd/options.resolvedXcworkspaceName()).mkdir()
+        try (Path.cwd / options.resolvedXcworkspaceName()).mkdir()
 
 
         // 1. mkdir \(options.xcworkspaceName).xcworkspace
-        let xcworkspacePah = try (Path.cwd/"\(options.resolvedXcworkspaceName()).xcworkspace").mkdir()
+        let xcworkspacePah = try (Path.cwd / "\(options.resolvedXcworkspaceName()).xcworkspace").mkdir()
 
         // 1. curl -o .gitignore https://raw.githubusercontent.com/github/gitignore/main/Swift.gitignore
         _ = try tsc_await {
-            HTTP.download(url: URL(string: "https://raw.githubusercontent.com/github/gitignore/main/Swift.gitignore")!, to: (Path.cwd/".gitignore").url, completionHandler: $0)
+            HTTP.download(url: URL(string: "https://raw.githubusercontent.com/github/gitignore/main/Swift.gitignore")!, to: (Path.cwd / ".gitignore").url, completionHandler: $0)
         }
 
         // 1. cd options.xcworkspaceName
         fs.changeCurrentDirectoryPath(options.resolvedXcworkspaceName())
 
         // 1. mkdir Package
-        try (Path.cwd/"Package").mkdir()
+        try (Path.cwd / "Package").mkdir()
 
 
         // 1. mkdir App
-        try (Path.cwd/"App").mkdir()
+        try (Path.cwd / "App").mkdir()
 
         // 1. cd Package
-        fs.changeCurrentDirectoryPath((Path.cwd/"Package").string)
+        fs.changeCurrentDirectoryPath((Path.cwd / "Package").string)
 
         // 1. swift package init --type library
         _ = try Shell.shared.run(arguments: ["swift", "package", "init", "--type", "library"])
 
         // 1. rm README.md
-        try fs.removeItemIfExists(at: (Path.cwd/"README.md").url)
+        try fs.removeItemIfExists(at: (Path.cwd / "README.md").url)
 
         var rewriter = try ManifestRewriter(packagePath: Path.cwd.absolutePath())
         try rewriter.addTargets(names: options.moduleNames)
-        try rewriter.write(to: (Path.cwd/ManifestRewriter.fileName).absolutePath())
+        try rewriter.write(to: (Path.cwd / ManifestRewriter.fileName).absolutePath())
 
         for moduleName in options.moduleNames {
-            try generateModuleSampleFile(name: moduleName, rootDirectory: Path.cwd/"Sources")
+            try generateModuleSampleFile(name: moduleName, rootDirectory: Path.cwd / "Sources")
         }
 
 
@@ -107,7 +107,7 @@ extension ScaffoldCommand {
     }
 
     func generateModuleSampleFile(name: String, rootDirectory: Path) throws {
-        let moduleDir: Path = rootDirectory/name
+        let moduleDir: Path = rootDirectory / name
         try moduleDir.mkdir(.p)
         let content = """
             public struct \(name) {
@@ -118,6 +118,6 @@ extension ScaffoldCommand {
             }
             """
 
-        try content.write(to: moduleDir/"\(name).swift", atomically: true)
+        try content.write(to: moduleDir / "\(name).swift", atomically: true)
     }
 }

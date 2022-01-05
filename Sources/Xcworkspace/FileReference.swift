@@ -1,9 +1,9 @@
 //
 //  FileReference.swift
-//  
+//
 //
 //  Created by griffin-stewie on 2022/01/01.
-//  
+//
 //
 
 import Foundation

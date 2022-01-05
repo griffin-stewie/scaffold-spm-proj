@@ -1,11 +1,11 @@
-import Foundation
 import ArgumentParser
+import Foundation
 import Path
 
 struct ScaffoldCommandOptions: ParsableArguments {
 
     @Option(name: [.customLong("output-dir")], help: ArgumentHelp("where to generate", valueName: "destination_dir"))
-    var destinationDirectory: Path = Path.cwd/"."
+    var destinationDirectory: Path = Path.cwd / "."
 
     @Option()
     var repositoryName: String

@@ -15,7 +15,7 @@ extension String {
 
     fileprivate func camelCaseToSpaceSeparatedString() -> String {
         return self.replacingOccurrences(of: "([A-Z\\d]+)([A-Z][a-z])", with: "$1 $2", options: .regularExpression, range: nil)
-        .replacingOccurrences(of: "([a-z\\d])([A-Z])", with: "$1 $2", options: .regularExpression, range: nil)
+            .replacingOccurrences(of: "([a-z\\d])([A-Z])", with: "$1 $2", options: .regularExpression, range: nil)
     }
 
     public func camelCase() -> String {
@@ -31,7 +31,7 @@ extension String {
 
         if string.length > 0 {
             let firstLetterRange = NSMakeRange(0, 1)
-            let lowercasedFirstLetter = string.substring(with: firstLetterRange).lowercased();
+            let lowercasedFirstLetter = string.substring(with: firstLetterRange).lowercased()
             string.replaceCharacters(in: firstLetterRange, with: lowercasedFirstLetter)
         }
 

@@ -1,5 +1,5 @@
-import Foundation
 import ArgumentParser
+import Foundation
 
 struct RootCommand: ParsableCommand {
     static var configuration = CommandConfiguration(

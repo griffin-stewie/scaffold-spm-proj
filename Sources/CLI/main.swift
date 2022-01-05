@@ -1,7 +1,7 @@
-import Foundation
-import Dispatch
 import ArgumentParser
 import Core
+import Dispatch
+import Foundation
 
 Shell.shared.monitoringSignals()
 

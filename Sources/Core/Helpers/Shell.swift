@@ -26,7 +26,7 @@ public final class Shell {
     // Setup function before you use if you want to handle signals
     public func monitoringSignals() {
         // Make sure the signal does not terminate the application.
-        signal(SIGINT, SIG_IGN);
+        signal(SIGINT, SIG_IGN)
         signalSource = DispatchSource.makeSignalSource(signal: SIGINT, queue: .main)
         signalSource!.setEventHandler { [weak self] in
             if let strongSelf = self {
@@ -55,7 +55,7 @@ public final class Shell {
             handlers.append(handler)
         }
         let result = try _run(arguments: arguments, outputRedirection: outputRedirection, processSet: processSet)
-        
+
         switch result.exitStatus {
         case .signalled(let v):
             return (result, v)
