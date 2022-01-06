@@ -10,8 +10,10 @@ import TSCBasic
 /// Helper class that invoke other command line tool. It handles signal as well.
 public final class Shell {
 
+    /// shared instance
     public static let shared: Shell = Shell()
 
+    /// typealias of termination handler
     public typealias TerminationHandler = () -> Void
 
     private var handlers: [TerminationHandler] = []
@@ -23,7 +25,7 @@ public final class Shell {
 
     }
 
-    // Setup function before you use if you want to handle signals
+    /// Setup function before you use if you want to handle signals
     public func monitoringSignals() {
         // Make sure the signal does not terminate the application.
         signal(SIGINT, SIG_IGN)
@@ -43,10 +45,12 @@ public final class Shell {
     /// synchronous. Use TSCBasic.Process because gets freeze when using Foundation.Process
     /// - Parameters:
     ///   - arguments: arguments include command itself
+    ///   - outputRedirection: redirection
     ///   - processSet: ProcessSet to handle signals
     ///   - terminationHandler: callback when signal arrived
     /// - Returns: status code
     /// - Throws: exception from TSCBasic.Process
+    ///
     public func run(arguments: [String], outputRedirection: TSCBasic.Process.OutputRedirection = .none, processSet: ProcessSet? = nil, terminationHandler: TerminationHandler? = nil) throws -> (ProcessResult, Int32) {
         if let h = terminationHandler {
             handlers.append(h)

@@ -9,12 +9,16 @@
 import Foundation
 import System
 
+/// FileReference node for xcworkspace
 public struct FileReference {
 
     private let type: String = "group"
 
+    /// File path where the contents located
     public let location: FilePath
 
+    /// Initializer
+    /// - Parameter location: File path where the contents located
     public init(location: FilePath) {
         self.location = location
     }

@@ -1,6 +1,12 @@
 import Foundation
 
+/// Simple HTTP Client
 public struct HTTP {
+
+    /// GET request
+    /// - Parameters:
+    ///   - url: URL
+    ///   - completionHandler: completion handler
     public static func get(url: URL, completionHandler: @escaping (Result<Data, Error>) -> Void) {
         let task = URLSession.shared.dataTask(with: url) { (taskData, _, error) in
             if error != nil {
@@ -12,6 +18,12 @@ public struct HTTP {
         task.resume()
     }
 
+    /// Download
+    /// - Parameters:
+    ///   - url: URL
+    ///   - to: Where to save the downloaded data.
+    ///   - overwrite: overwrite if exists
+    ///   - completionHandler: completion handler
     public static func download(url: URL, to destination: URL, overwrite: Bool = true, completionHandler: @escaping (Result<URL, Error>) -> Void) {
         let task = URLSession.shared.downloadTask(with: url) { (downloadedURL, _, error) in
             if error != nil {

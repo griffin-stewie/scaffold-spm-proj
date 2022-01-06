@@ -4,8 +4,10 @@ import PackageModel
 import TSCBasic
 import Workspace
 
+/// Rewrite Package.swift
 public struct ManifestRewriter {
 
+    /// Default fileName
     public static let fileName: String = Manifest.filename
 
     let fileSystem: FileSystem
@@ -14,6 +16,11 @@ public struct ManifestRewriter {
 
     var manifest: Manifest
 
+    /// Initialize
+    /// - Parameters:
+    ///   - fileSystem: file system will be used. default value is `localFileSystem`.
+    ///   - packagePath: The path to the directory containing Pacakge.swift.
+    /// - Throws: `ManifestLoader` or `Process` errors
     public init(fileSystem: FileSystem = localFileSystem, packagePath: AbsolutePath) throws {
         self.fileSystem = fileSystem
         self.packagePath = packagePath
@@ -31,21 +38,21 @@ public struct ManifestRewriter {
         manifest = try tsc_await { ManifestLoader.loadRootManifest(at: packagePath, swiftCompiler: swiftCompiler, swiftCompilerFlags: [], identityResolver: identityResolver, fileSystem: fileSystem, on: .global(), completion: $0) }
     }
 
+    /// Add targets
+    /// - Parameter names: names of target
+    /// - Throws: `TargetDescription` initialization errors
     public mutating func addTargets(names: [String]) throws {
         if names.isEmpty {
             return
         }
 
-        let products = manifest.products.map({ $0.name }).joined(separator: ", ")
-        print("Products:", products)
-
         let newTargets = try names.map { try TargetDescription(name: $0, dependencies: [], type: .regular) }
         manifest = manifest.copyAppending(newTargets: newTargets)
-
-        let targets = manifest.targets.map({ $0.name }).joined(separator: ", ")
-        print("Targets:", targets)
     }
 
+    /// Write Package.swift to destination path
+    /// - Parameter destination: where to export Pacakge.swift
+    /// - Throws: `FileSystem` errors
     public func write(to destination: AbsolutePath) throws {
         try manifest.write(to: destination, fileSystem: fileSystem)
     }
