@@ -1,40 +1,41 @@
-import XCTest
-@testable import Core
-import TSCBasic
 import PackageModel
+import TSCBasic
+import XCTest
+
+@testable import Core
 
 final class ManifestRewriterTests: XCTestCase {
     let inputManifestContent: String = """
-    // swift-tools-version:5.5
-    // The swift-tools-version declares the minimum version of Swift required to build this package.
+        // swift-tools-version:5.5
+        // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-    import PackageDescription
+        import PackageDescription
 
-    let package = Package(
-        name: "Package",
-        products: [
-            // Products define the executables and libraries a package produces, and make them visible to other packages.
-            .library(
-                name: "Package",
-                targets: ["Package"]),
-        ],
-        dependencies: [
-            // Dependencies declare other packages that this package depends on.
-            // .package(url: /* package url */, from: "1.0.0"),
-        ],
-        targets: [
-            // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-            // Targets can depend on other targets in this package, and on products in packages this package depends on.
-            .target(
-                name: "Package",
-                dependencies: []),
-            .testTarget(
-                name: "PackageTests",
-                dependencies: ["Package"]),
-        ]
-    )
+        let package = Package(
+            name: "Package",
+            products: [
+                // Products define the executables and libraries a package produces, and make them visible to other packages.
+                .library(
+                    name: "Package",
+                    targets: ["Package"]),
+            ],
+            dependencies: [
+                // Dependencies declare other packages that this package depends on.
+                // .package(url: /* package url */, from: "1.0.0"),
+            ],
+            targets: [
+                // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+                // Targets can depend on other targets in this package, and on products in packages this package depends on.
+                .target(
+                    name: "Package",
+                    dependencies: []),
+                .testTarget(
+                    name: "PackageTests",
+                    dependencies: ["Package"]),
+            ]
+        )
 
-    """
+        """
 
     let rootDirectoryPath = AbsolutePath("/Original/Package")
     lazy var manifestPath = rootDirectoryPath.appending(component: Manifest.filename)
@@ -63,39 +64,39 @@ final class ManifestRewriterTests: XCTestCase {
 
     func testRewrite() throws {
         let expectedManifestContent: String = """
-        // swift-tools-version:5.5
-        // The swift-tools-version declares the minimum version of Swift required to build this package.
+            // swift-tools-version:5.5
+            // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-        import PackageDescription
+            import PackageDescription
 
-        let package = Package(
-            name: "Package",
-            products: [
-                // Products define the executables and libraries a package produces, and make them visible to other packages.
-                .library(
-                    name: "Package",
-                    targets: ["Package"]),
-            ],
-            dependencies: [
-                // Dependencies declare other packages that this package depends on.
-                // .package(url: /* package url */, from: "1.0.0"),
-            ],
-            targets: [
-                // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-                // Targets can depend on other targets in this package, and on products in packages this package depends on.
-                .target(
-                    name: "Package",
-                    dependencies: []),
-                .target(
-                    name: "Core",
-                    dependencies: []),
-                .testTarget(
-                    name: "PackageTests",
-                    dependencies: ["Package"]),
-            ]
-        )
-        
-        """
+            let package = Package(
+                name: "Package",
+                products: [
+                    // Products define the executables and libraries a package produces, and make them visible to other packages.
+                    .library(
+                        name: "Package",
+                        targets: ["Package"]),
+                ],
+                dependencies: [
+                    // Dependencies declare other packages that this package depends on.
+                    // .package(url: /* package url */, from: "1.0.0"),
+                ],
+                targets: [
+                    // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+                    // Targets can depend on other targets in this package, and on products in packages this package depends on.
+                    .target(
+                        name: "Package",
+                        dependencies: []),
+                    .target(
+                        name: "Core",
+                        dependencies: []),
+                    .testTarget(
+                        name: "PackageTests",
+                        dependencies: ["Package"]),
+                ]
+            )
+
+            """
 
         let testRoot = AbsolutePath("/testReGenerate/Package")
         try! fileSystem.createDirectory(testRoot, recursive: true)
@@ -112,39 +113,39 @@ final class ManifestRewriterTests: XCTestCase {
 
     func testSupportPlatform() throws {
         let expectedManifestContent: String = """
-        // swift-tools-version:5.5
-        // The swift-tools-version declares the minimum version of Swift required to build this package.
+            // swift-tools-version:5.5
+            // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-        import PackageDescription
+            import PackageDescription
 
-        let package = Package(
-            name: "Package",
-            platforms: [
-                .macOS(.v10_15),
-            ],
-            products: [
-                // Products define the executables and libraries a package produces, and make them visible to other packages.
-                .library(
-                    name: "Package",
-                    targets: ["Package"]),
-            ],
-            dependencies: [
-                // Dependencies declare other packages that this package depends on.
-                // .package(url: /* package url */, from: "1.0.0"),
-            ],
-            targets: [
-                // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-                // Targets can depend on other targets in this package, and on products in packages this package depends on.
-                .target(
-                    name: "Package",
-                    dependencies: []),
-                .testTarget(
-                    name: "PackageTests",
-                    dependencies: ["Package"]),
-            ]
-        )
+            let package = Package(
+                name: "Package",
+                platforms: [
+                    .macOS(.v10_15),
+                ],
+                products: [
+                    // Products define the executables and libraries a package produces, and make them visible to other packages.
+                    .library(
+                        name: "Package",
+                        targets: ["Package"]),
+                ],
+                dependencies: [
+                    // Dependencies declare other packages that this package depends on.
+                    // .package(url: /* package url */, from: "1.0.0"),
+                ],
+                targets: [
+                    // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+                    // Targets can depend on other targets in this package, and on products in packages this package depends on.
+                    .target(
+                        name: "Package",
+                        dependencies: []),
+                    .testTarget(
+                        name: "PackageTests",
+                        dependencies: ["Package"]),
+                ]
+            )
 
-        """
+            """
 
 
         try resetPackageSwift(rootDirectoryPath: rootDirectoryPath, manifestPath: manifestPath, manifestContents: expectedManifestContent)

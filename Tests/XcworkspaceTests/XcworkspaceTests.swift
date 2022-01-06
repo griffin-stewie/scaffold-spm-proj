@@ -1,23 +1,24 @@
-import XCTest
-@testable import Xcworkspace
 import Path
+import XCTest
+
+@testable import Xcworkspace
 
 final class XcworkspaceTests: XCTestCase {
     var xmlString: String = """
-    <?xml version="1.0" encoding="UTF-8"?>
-    <Workspace
-       version = "1.0">
-       <FileRef
-          location = "group:Sample/Package">
-       </FileRef>
-       <FileRef
-          location = "group:Sample/iOS.xcodeproj">
-       </FileRef>
-       <FileRef
-          location = "group:Sample/macOS.xcodeproj">
-       </FileRef>
-    </Workspace>
-    """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <Workspace
+           version = "1.0">
+           <FileRef
+              location = "group:Sample/Package">
+           </FileRef>
+           <FileRef
+              location = "group:Sample/iOS.xcodeproj">
+           </FileRef>
+           <FileRef
+              location = "group:Sample/macOS.xcodeproj">
+           </FileRef>
+        </Workspace>
+        """
 
     func testConstruct() throws {
         var workspace = Xcworkspace()
