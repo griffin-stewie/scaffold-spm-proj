@@ -21,7 +21,7 @@ public struct HTTP {
     /// Download
     /// - Parameters:
     ///   - url: URL
-    ///   - to: Where to save the downloaded data.
+    ///   - destination: Where to save the downloaded data
     ///   - overwrite: overwrite if exists
     ///   - completionHandler: completion handler
     public static func download(url: URL, to destination: URL, overwrite: Bool = true, completionHandler: @escaping (Result<URL, Error>) -> Void) {

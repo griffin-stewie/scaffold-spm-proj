@@ -18,8 +18,8 @@ public struct ManifestRewriter {
 
     /// Initialize
     /// - Parameters:
-    ///   - fileSystem: file system will be used. default value is `localFileSystem`.
-    ///   - packagePath: The path to the directory containing Pacakge.swift.
+    ///   - fileSystem: file system will be used, default value is `localFileSystem`
+    ///   - packagePath: The path to the directory containing Pacakge.swift
     /// - Throws: `ManifestLoader` or `Process` errors
     public init(fileSystem: FileSystem = localFileSystem, packagePath: AbsolutePath) throws {
         self.fileSystem = fileSystem
