@@ -11,6 +11,24 @@
         }
       },
       {
+        "package": "Puppy",
+        "repositoryURL": "https://github.com/sushichop/Puppy",
+        "state": {
+          "branch": null,
+          "revision": "182de01aca4ee388a4373e260c593ce1adb6af44",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "83b23d940471b313427da226196661856f6ba3e0",
+          "version": "0.4.4"
+        }
+      },
+      {
         "package": "swift-crypto",
         "repositoryURL": "https://github.com/apple/swift-crypto.git",
         "state": {
@@ -35,6 +53,15 @@
           "branch": "release/5.5",
           "revision": "83c4bcb8dfca48cc065325287b55d08ff7b26428",
           "version": null
+        }
+      },
+      {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
+        "state": {
+          "branch": null,
+          "revision": "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
+          "version": "1.4.2"
         }
       },
       {

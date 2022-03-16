@@ -17,6 +17,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "0.4.0")),
         .package(url: "https://github.com/mxcl/Path.swift.git", .upToNextMinor(from: "1.4.0")),
         .package(url: "https://github.com/apple/swift-package-manager", .branch("swift-5.5.2-RELEASE")),
+        .package(url: "https://github.com/sushichop/Puppy", .upToNextMinor(from: "0.4.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -37,6 +38,11 @@ let package = Package(
         .target(
             name: "Xcworkspace",
             dependencies: [
+            ]),
+        .target(
+            name: "Logger",
+            dependencies: [
+                .product(name: "Puppy", package: "Puppy"),
             ]),
         .testTarget(
             name: "scaffold-spm-projTests",
